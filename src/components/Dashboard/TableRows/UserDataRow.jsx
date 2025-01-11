@@ -4,19 +4,24 @@ import PropTypes from 'prop-types'
 import { AuthContext } from '../../../providers/AuthProvider'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import toast from 'react-hot-toast'
-const UserDataRow = ({user}) => {
+const UserDataRow = ({user,refetch}) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const{user}=useContext(AuthContext);
+  const{user:man}=useContext(AuthContext);
 
   const axiosSecure=useAxiosSecure();
 
+
+
+
   const updateRole=async(selected)=>{
-    if(role===selected) return
+    if(user?.role===selected) return
     try{
       const{data}=await axiosSecure.patch(`/users/role/${user?.email}`,{role:selected})
     if(data.modifiedCount>0){
       toast.success("Role Updated")
+      refetch();
+      setIsOpen(false)
     }
     }
     catch(error){
