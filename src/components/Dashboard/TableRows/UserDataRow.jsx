@@ -1,8 +1,28 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import UpdateUserModal from '../../Modal/UpdateUserModal'
 import PropTypes from 'prop-types'
+import { AuthContext } from '../../../providers/AuthProvider'
+import useAxiosSecure from '../../../hooks/useAxiosSecure'
+import toast from 'react-hot-toast'
 const UserDataRow = ({user}) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const{user}=useContext(AuthContext);
+
+  const axiosSecure=useAxiosSecure();
+
+  const updateRole=async(selected)=>{
+    if(role===selected) return
+    try{
+      const{data}=await axiosSecure.patch(`/users/role/${user?.email}`,{role:selected})
+    if(data.modifiedCount>0){
+      toast.success("Role Updated")
+    }
+    }
+    catch(error){
+      console.log(error.message)
+    }
+  }
 
   return (
     <tr>
@@ -32,7 +52,7 @@ const UserDataRow = ({user}) => {
           <span className='relative'>Update Role</span>
         </span>
         {/* Modal */}
-        <UpdateUserModal isOpen={isOpen} setIsOpen={setIsOpen} />
+        <UpdateUserModal updateRole={updateRole} role={user?.role} isOpen={isOpen} setIsOpen={setIsOpen} />
       </td>
     </tr>
   )
