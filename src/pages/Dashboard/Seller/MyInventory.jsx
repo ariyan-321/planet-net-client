@@ -5,6 +5,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { AuthContext } from '../../../providers/AuthProvider';
+import toast from 'react-hot-toast';
 
 const MyInventory = () => {
   const axiosSecure=useAxiosSecure();
@@ -20,6 +21,15 @@ const MyInventory = () => {
 
 
   });
+
+
+  const handleDelete=async(id)=>{
+    const {data}=await axiosSecure.delete(`plants/${id}`)
+    if(data.deletedCount>0){
+      toast.success("Plant Deleted")
+      refetch();
+    }
+  }
 
 
   return (
@@ -81,7 +91,7 @@ const MyInventory = () => {
                 </thead>
                 <tbody>
                   {
-                    plants.map((plant)=> <PlantDataRow refetch={refetch} plant={plant} key={plant._id} />)
+                    plants.map((plant)=> <PlantDataRow  handleDelete={handleDelete} refetch={refetch} plant={plant} key={plant._id} />)
                   }
                 </tbody>
               </table>
