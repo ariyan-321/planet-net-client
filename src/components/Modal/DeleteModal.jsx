@@ -7,7 +7,7 @@ import {
 } from '@headlessui/react'
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
-const DeleteModal = ({ closeModal, isOpen,handleDelete,plant }) => {
+const DeleteModal = ({ closeModal, isOpen,handleDelete}) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={closeModal}>
@@ -50,7 +50,7 @@ const DeleteModal = ({ closeModal, isOpen,handleDelete,plant }) => {
                 <div className='flex mt-2 justify-around'>
                   <button
                   onClick={()=>{
-                    handleDelete(plant._id)
+                    handleDelete()
                     closeModal()
                   }}
                     type='button'
