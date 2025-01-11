@@ -21,11 +21,13 @@ const UserDataRow = ({user,refetch}) => {
     if(data.modifiedCount>0){
       toast.success("Role Updated")
       refetch();
-      setIsOpen(false)
     }
     }
     catch(error){
-      console.log(error.message)
+      toast.error(error.response?.data)
+    }
+    finally{
+      setIsOpen(false)
     }
   }
 
