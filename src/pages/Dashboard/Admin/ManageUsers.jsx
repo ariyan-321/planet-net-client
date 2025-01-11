@@ -3,15 +3,18 @@ import UserDataRow from '../../../components/Dashboard/TableRows/UserDataRow'
 import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner'
+import { useContext } from 'react'
+import { AuthContext } from '../../../providers/AuthProvider'
 
 const ManageUsers = () => {
 
   const axiosSecure=useAxiosSecure();
+  const{user}=useContext(AuthContext)
 
   const{data:users=[],isLoading,refetch}=useQuery({
-    queryKey:['users'],
+    queryKey:['users',user?.email],
     queryFn:async()=>{
-      const{data}=await axiosSecure.get("/all-users")
+      const{data}=await axiosSecure.get(`/all-users/${user?.email}`)
       return data;
     }
   });
