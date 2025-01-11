@@ -33,11 +33,24 @@ const SellerOrderDataRow = ({order,refetch,}) => {
       } finally {
         closeModal();
       }
+    
     };
 
     const handleStatusChange=async(newStatus)=>{
-
+      if(order?.status===newStatus) return
+      try{
+        const res = await axiosSecure.patch(`/orders/${order?._id}`,{status:newStatus});
+        console.log(res.data)
+        if(res.data.modifiedCount>0){
+          toast.success("Status Updated")
+        }
+      }
+      catch(error){
+        console.log(error.message)
+      }
+  
     }
+
 
 
   return (
@@ -66,6 +79,7 @@ const SellerOrderDataRow = ({order,refetch,}) => {
           <select
           onChange={(e)=> handleStatusChange(e.target.value)}
             required
+            disabled={order?.status==="Delivered"}
             className='p-1 border-2 border-lime-300 focus:outline-lime-500 rounded-md text-gray-900 whitespace-no-wrap bg-white'
             name='category'
           >
